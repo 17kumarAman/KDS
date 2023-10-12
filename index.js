@@ -17,12 +17,12 @@ app.post("/contact", async (req, res) => {
   const { name, email, phone, service, message } = req.body;
 
   let transporter = nodemailer.createTransport({
-    host: "smtpout.secureserver.net",
+    host: "mail.kusheldigi.com",
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
       user: "info@kusheldigi.com",
-      pass: "KDS@info@3421",
+      pass: "kusheldigisolutions@2024",
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -87,12 +87,12 @@ app.post("/contact1", async (req, res) => {
   const { company1, name1, email1, phone1, service1, message1 } = req.body;
 
   let transporter = nodemailer.createTransport({
-    host: "smtpout.secureserver.net",
+    host: "mail.kusheldigi.com",
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
       user: "info@kusheldigi.com",
-      pass: "KDS@info@3421",
+      pass: "kusheldigisolutions@2024",
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -136,12 +136,12 @@ app.post("/contact2", async (req, res) => {
   const { name2, phone2, email2, message2 } = req.body;
 
   let transporter = nodemailer.createTransport({
-    host: "smtpout.secureserver.net",
+    host: "mail.kusheldigi.com",
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
       user: "info@kusheldigi.com",
-      pass: "KDS@info@3421",
+      pass: "kusheldigisolutions@2024",
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -194,6 +194,48 @@ app.post("/contact2", async (req, res) => {
   });
   let data2=await resp2.json();
 
+  res.json({ success: true, message: "Email Sent successfully" });
+});
+
+
+app.post("/contact3", async (req, res) => {
+  const { name4, email4, requirement4 } = req.body;
+
+  let transporter = nodemailer.createTransport({
+    host: "mail.kusheldigi.com",
+    port: 465,
+    secure: true, // true for 465, false for other ports
+    auth: {
+      user: "info@kusheldigi.com",
+      pass: "kusheldigisolutions@2024",
+    },
+    from: "info@kusheldigi.com",
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  // const htmlToSend = template(replacements);
+
+  // send mail with defined transport object
+  let info1 = await transporter.sendMail({
+    from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
+    to: "info@kusheldigi.com",
+    subject: "Contact Form",
+    text: `
+            Company: ${name4}, 
+            Name: ${email4}, 
+            Email: ${requirement4}, 
+    `,
+    html: `
+    <div>
+    <div>Company: ${name4}</div>
+    <div>Name: ${email4}</div>
+    <div>Email: ${requirement4}</div>
+</div>
+        `,
+  });
+  
   res.json({ success: true, message: "Email Sent successfully" });
 });
 
