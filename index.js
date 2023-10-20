@@ -57,30 +57,32 @@ app.post("/contact", async (req, res) => {
         `,
   });
 
-  let resp1=await fetch(`https://accounts.zoho.in/oauth/v2/token?grant_type=refresh_token&client_id=1000.FS0PE9O76Z2VG1XDJFGG49O4J77ZKF&client_secret=e49d2b9e743e403ebba076fd28a05a80f6e5815833&refresh_token=1000.7cabfb8e30f390c31275783a09f4b907.2aea28f36e7defada84b8e4dc38ce432`,{
-    method:'POST'
+  let resp1 = await fetch(`https://accounts.zoho.in/oauth/v2/token?grant_type=refresh_token&client_id=1000.FS0PE9O76Z2VG1XDJFGG49O4J77ZKF&client_secret=e49d2b9e743e403ebba076fd28a05a80f6e5815833&refresh_token=1000.7cabfb8e30f390c31275783a09f4b907.2aea28f36e7defada84b8e4dc38ce432`, {
+    method: 'POST'
   });
-  let data1=await resp1.json();
+  let data1 = await resp1.json();
   console.log(data1);
-  let resp2=await fetch("https://www.zohoapis.in/crm/v4/Contacts",{
-    method:'POST',
-    headers:{
+  let resp2 = await fetch("https://www.zohoapis.in/crm/v4/Contacts", {
+    method: 'POST',
+    headers: {
       Authorization: `Bearer ${data1.access_token}`
     },
-    body:JSON.stringify({  "data":[
-      {
-        "Department": service,
-        "First_Name": name,
-        "Last_Name": "-",
-        "Email": email,
-        "Description": message,
-        "Phone" : phone
-      }
-    ]})
+    body: JSON.stringify({
+      "data": [
+        {
+          "Department": service,
+          "First_Name": name,
+          "Last_Name": "-",
+          "Email": email,
+          "Description": message,
+          "Phone": phone
+        }
+      ]
+    })
   });
-  let data2=await resp2.json();
+  let data2 = await resp2.json();
 
-  res.json({ success: true, message: "Email Sent Successfully" });
+  res.json({ success: true, message: "Thank You! we will get back you shortly" });
 });
 
 app.post("/contact1", async (req, res) => {
@@ -129,7 +131,7 @@ app.post("/contact1", async (req, res) => {
         `,
   });
 
-  res.json({ success: true, message: "Email Sent successfully" });
+  res.json({ success: true, message: "Thank You! we will get back you shortly" });
 });
 
 app.post("/contact2", async (req, res) => {
@@ -149,11 +151,12 @@ app.post("/contact2", async (req, res) => {
     },
   });
 
-  
+
   let info2 = await transporter.sendMail({
     from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
     to: "info@kusheldigi.com",
     subject: "Contact Form",
+    replyTo: `${email2}`,
     text: `
         <div>
             <div>Name: ${name2}</div>
@@ -172,29 +175,31 @@ app.post("/contact2", async (req, res) => {
         `,
   });
 
-  let resp1=await fetch(`https://accounts.zoho.in/oauth/v2/token?grant_type=refresh_token&client_id=1000.FS0PE9O76Z2VG1XDJFGG49O4J77ZKF&client_secret=e49d2b9e743e403ebba076fd28a05a80f6e5815833&refresh_token=1000.7cabfb8e30f390c31275783a09f4b907.2aea28f36e7defada84b8e4dc38ce432`,{
-    method:'POST'
+  let resp1 = await fetch(`https://accounts.zoho.in/oauth/v2/token?grant_type=refresh_token&client_id=1000.FS0PE9O76Z2VG1XDJFGG49O4J77ZKF&client_secret=e49d2b9e743e403ebba076fd28a05a80f6e5815833&refresh_token=1000.7cabfb8e30f390c31275783a09f4b907.2aea28f36e7defada84b8e4dc38ce432`, {
+    method: 'POST'
   });
-  let data1=await resp1.json();
+  let data1 = await resp1.json();
   console.log(data1);
-  let resp2=await fetch("https://www.zohoapis.in/crm/v4/Contacts",{
-    method:'POST',
-    headers:{
+  let resp2 = await fetch("https://www.zohoapis.in/crm/v4/Contacts", {
+    method: 'POST',
+    headers: {
       Authorization: `Bearer ${data1.access_token}`
     },
-    body:JSON.stringify({  "data":[
-      {
-        "First_Name": name2,
-        "Last_Name": "-",
-        "Email": email2,
-        "Description": message2,
-        "Phone" : phone2
-      }
-    ]})
+    body: JSON.stringify({
+      "data": [
+        {
+          "First_Name": name2,
+          "Last_Name": "-",
+          "Email": email2,
+          "Description": message2,
+          "Phone": phone2
+        }
+      ]
+    })
   });
-  let data2=await resp2.json();
+  let data2 = await resp2.json();
 
-  res.json({ success: true, message: "Email Sent successfully" });
+  res.json({ success: true, message: "Thank You! we will get back you shortly" });
 });
 
 
@@ -235,8 +240,104 @@ app.post("/contact3", async (req, res) => {
 </div>
         `,
   });
-  
-  res.json({ success: true, message: "Email Sent successfully" });
+
+  res.json({ success: true, message: "Thank You! we will get back you shortly" });
+});
+
+app.post("/contact4", async (req, res) => {
+  const { first_name, last_name, email_address, city, date, time, additional_msg } = req.body;
+
+  let transporter = nodemailer.createTransport({
+    host: "mail.kusheldigi.com",
+    port: 465,
+    secure: true, // true for 465, false for other ports
+    auth: {
+      user: "info@kusheldigi.com",
+      pass: "kusheldigisolutions@2024",
+    },
+    from: "info@kusheldigi.com",
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  // const htmlToSend = template(replacements);
+
+  // send mail with defined transport object
+  let info1 = await transporter.sendMail({
+    from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
+    to: "info@kusheldigi.com",
+    subject: "Contact Form",
+    text: `
+            FirstName: ${first_name}, 
+            LastName: ${last_name}, 
+            EmailAddress: ${email_address}, 
+            City: ${city},
+            Date: ${date},
+            Time: ${time},
+            AdditionalMessage: ${additional_msg}
+    `,
+    html: `
+    <div>
+    <div>FirstName: ${first_name}</div>
+    <div>LastName: ${last_name}</div>
+    <div>EmailAddress: ${email_address}</div>
+    <div>City: ${city}</div>
+    <div>Date: ${date}</div>
+    <div>Time: ${time}</div>
+    div>AdditionalMessage: ${additional_msg}</div>
+</div>
+        `,
+  });
+
+  res.json({ success: true, message: "Thank You! we will get back you shortly" });
+});
+
+app.post("/contact5", async (req, res) => {
+  const { technology, products, Estore, name6, mobile6, email6 } = req.body;
+
+  let transporter = nodemailer.createTransport({
+    host: "mail.kusheldigi.com",
+    port: 465,
+    secure: true, // true for 465, false for other ports
+    auth: {
+      user: "info@kusheldigi.com",
+      pass: "kusheldigisolutions@2024",
+    },
+    from: "info@kusheldigi.com",
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  // const htmlToSend = template(replacements);
+
+  // send mail with defined transport object
+  let info1 = await transporter.sendMail({
+    from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
+    to: "info@kusheldigi.com",
+    subject: "Contact Form",
+    text: `
+            Technology: ${technology}, 
+            Products: ${products}, 
+            E-store: ${Estore}, 
+            Name: ${name6},
+            Mobile: ${mobile6},
+            Email: ${email6},
+    `,
+    html: `
+    <div>
+    <div>Technology: ${technology}</div>
+    <div>Products: ${products}</div>
+    <div>E-store: ${Estore}</div>
+    <div>Name: ${name6}</div>
+    <div>Mobile: ${mobile6}</div>
+    <div>Email: ${email6}</div>
+</div>
+        `,
+  });
+
+  res.json({ success: true, message: "Thank You! we will get back you shortly" });
 });
 
 // {
@@ -246,32 +347,34 @@ app.post("/contact3", async (req, res) => {
 //   "token_type": "Bearer",
 //   "expires_in": 3600
 // }
-app.post('/test', async(req,res)=>{
+app.post('/test', async (req, res) => {
   try {
-      const { name, email, phone, service, message } = req.body;
-      let resp1=await fetch(`https://accounts.zoho.in/oauth/v2/token?grant_type=refresh_token&client_id=1000.FS0PE9O76Z2VG1XDJFGG49O4J77ZKF&client_secret=e49d2b9e743e403ebba076fd28a05a80f6e5815833&refresh_token=1000.7cabfb8e30f390c31275783a09f4b907.2aea28f36e7defada84b8e4dc38ce432`,{
-        method:'POST'
-      });
-      let data1=await resp1.json();
-      console.log(data1);
-      let resp2=await fetch("https://www.zohoapis.in/crm/v4/Contacts",{
-        method:'POST',
-        headers:{
-          Authorization: `Bearer ${data1.access_token}`
-        },
-        body:JSON.stringify({  "data":[
+    const { name, email, phone, service, message } = req.body;
+    let resp1 = await fetch(`https://accounts.zoho.in/oauth/v2/token?grant_type=refresh_token&client_id=1000.FS0PE9O76Z2VG1XDJFGG49O4J77ZKF&client_secret=e49d2b9e743e403ebba076fd28a05a80f6e5815833&refresh_token=1000.7cabfb8e30f390c31275783a09f4b907.2aea28f36e7defada84b8e4dc38ce432`, {
+      method: 'POST'
+    });
+    let data1 = await resp1.json();
+    console.log(data1);
+    let resp2 = await fetch("https://www.zohoapis.in/crm/v4/Contacts", {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${data1.access_token}`
+      },
+      body: JSON.stringify({
+        "data": [
           {
             "Department": service,
             "First_Name": name,
             "Last_Name": "-",
             "Email": email,
             "Description": message,
-            "Phone" : phone
+            "Phone": phone
           }
-        ]})
-      });
-      let data2=await resp2.json();
-      res.json({success: true, data: data2, message: 'Form submitted successfully'});
+        ]
+      })
+    });
+    let data2 = await resp2.json();
+    res.json({ success: true, data: data2, message: 'Form submitted successfully' });
   } catch (error) {
     console.log(error.message);
   }
