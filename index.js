@@ -57,6 +57,20 @@ app.post("/contact", async (req, res) => {
         `,
   });
 
+  let info1 = await transporter.sendMail({
+    from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
+    to: email,
+    subject: "Contact Form",
+    text: `
+      Thank you
+    `,
+    html: `
+            <div>
+                <div>Thank you! we will get back to you</div>
+            </div>
+        `,
+  });
+
   let resp1 = await fetch(`https://accounts.zoho.in/oauth/v2/token?grant_type=refresh_token&client_id=1000.FS0PE9O76Z2VG1XDJFGG49O4J77ZKF&client_secret=e49d2b9e743e403ebba076fd28a05a80f6e5815833&refresh_token=1000.7cabfb8e30f390c31275783a09f4b907.2aea28f36e7defada84b8e4dc38ce432`, {
     method: 'POST'
   });
@@ -131,6 +145,20 @@ app.post("/contact1", async (req, res) => {
         `,
   });
 
+  let info2 = await transporter.sendMail({
+    from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
+    to: email1,
+    subject: "Contact Form",
+    text: `
+      Thank you
+    `,
+    html: `
+            <div>
+                <div>Thank you! we will get back to you</div>
+            </div>
+        `,
+  });
+
   res.json({ success: true, message: "Thank You! we will get back you shortly" });
 });
 
@@ -172,6 +200,20 @@ app.post("/contact2", async (req, res) => {
     <div>email: ${email2}</div>
     <div>Message: ${message2}</div>
 </div>
+        `,
+  });
+
+  let info3 = await transporter.sendMail({
+    from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
+    to: email2,
+    subject: "Contact Form",
+    text: `
+      Thank you
+    `,
+    html: `
+            <div>
+                <div>Thank you! we will get back to you</div>
+            </div>
         `,
   });
 
@@ -241,6 +283,20 @@ app.post("/contact3", async (req, res) => {
         `,
   });
 
+  let info2 = await transporter.sendMail({
+    from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
+    to: email4,
+    subject: "Contact Form",
+    text: `
+      Thank you
+    `,
+    html: `
+            <div>
+                <div>Thank you! we will get back to you</div>
+            </div>
+        `,
+  });
+
   res.json({ success: true, message: "Thank You! we will get back you shortly" });
 });
 
@@ -290,6 +346,20 @@ app.post("/contact4", async (req, res) => {
         `,
   });
 
+  let info2 = await transporter.sendMail({
+    from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
+    to: email_address,
+    subject: "Contact Form",
+    text: `
+      Thank you
+    `,
+    html: `
+            <div>
+                <div>Thank you! we will get back to you</div>
+            </div>
+        `,
+  });
+
   res.json({ success: true, message: "Thank You! we will get back you shortly" });
 });
 
@@ -334,6 +404,20 @@ app.post("/contact5", async (req, res) => {
     <div>Mobile: ${mobile6}</div>
     <div>Email: ${email6}</div>
 </div>
+        `,
+  });
+
+  let info2 = await transporter.sendMail({
+    from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
+    to: email6,
+    subject: "Contact Form",
+    text: `
+      Thank you
+    `,
+    html: `
+            <div>
+                <div>Thank you! we will get back to you</div>
+            </div>
         `,
   });
 
