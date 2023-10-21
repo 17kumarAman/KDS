@@ -244,7 +244,6 @@ app.post("/contact2", async (req, res) => {
   res.json({ success: true, message: "Thank You! we will get back you shortly" });
 });
 
-
 app.post("/contact3", async (req, res) => {
   const { name4, email4, requirement4 } = req.body;
 
