@@ -485,13 +485,13 @@ app.post("/contact5", async (req, res) => {
     body: JSON.stringify({
       "data": [
         {
-          "Department": technology,
-          "Website":products,
-          "Industry":Estore,
-          "First_Name": name6,
+          "First_Name":name6,
           "Last_Name": "-",
           "Email": email6,
-          "Phone": mobile6
+          "Phone": mobile6,
+          "Department": technology,
+          // "Website":products,
+          // "Industry":Estore
         }
       ]
     })
