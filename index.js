@@ -76,7 +76,7 @@ app.post("/contact", async (req, res) => {
   });
   let data1 = await resp1.json();
   console.log(data1);
-  let resp2 = await fetch("https://www.zohoapis.in/crm/v4/Contacts", {
+  let resp2 = await fetch("https://www.zohoapis.in/crm/v4/Leads", {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${data1.access_token}`
@@ -159,6 +159,31 @@ app.post("/contact1", async (req, res) => {
         `,
   });
 
+  let resp1 = await fetch(`https://accounts.zoho.in/oauth/v2/token?grant_type=refresh_token&client_id=1000.FS0PE9O76Z2VG1XDJFGG49O4J77ZKF&client_secret=e49d2b9e743e403ebba076fd28a05a80f6e5815833&refresh_token=1000.7cabfb8e30f390c31275783a09f4b907.2aea28f36e7defada84b8e4dc38ce432`, {
+    method: 'POST'
+  });
+  let data1 = await resp1.json();
+  console.log(data1);
+  let resp2 = await fetch("https://www.zohoapis.in/crm/v4/Leads", {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${data1.access_token}`
+    },
+    body: JSON.stringify({
+      "data": [
+        {
+          "Company": company1,
+          "First_Name": name1,
+          "Last_Name": "-",
+          "Email": email1,
+          "Department": service1,
+          "Phone": phone1
+        }
+      ]
+    })
+  });
+  let data2 = await resp2.json();
+
   res.json({ success: true, message: "Thank You! we will get back you shortly" });
 });
 
@@ -222,7 +247,7 @@ app.post("/contact2", async (req, res) => {
   });
   let data1 = await resp1.json();
   console.log(data1);
-  let resp2 = await fetch("https://www.zohoapis.in/crm/v4/Contacts", {
+  let resp2 = await fetch("https://www.zohoapis.in/crm/v4/Leads", {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${data1.access_token}`
@@ -296,7 +321,33 @@ app.post("/contact3", async (req, res) => {
         `,
   });
 
+  let resp1 = await fetch(`https://accounts.zoho.in/oauth/v2/token?grant_type=refresh_token&client_id=1000.FS0PE9O76Z2VG1XDJFGG49O4J77ZKF&client_secret=e49d2b9e743e403ebba076fd28a05a80f6e5815833&refresh_token=1000.7cabfb8e30f390c31275783a09f4b907.2aea28f36e7defada84b8e4dc38ce432`, {
+    method: 'POST'
+  });
+  let data1 = await resp1.json();
+  console.log(data1);
+  let resp2 = await fetch("https://www.zohoapis.in/crm/v4/Leads", {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${data1.access_token}`
+    },
+    body: JSON.stringify({
+      "data": [
+        {
+          
+          "First_Name": name4,
+          "Last_Name": "-",
+          "Email": email4,
+          "Description": requirement4,
+        }
+      ]
+    })
+  });
+  let data2 = await resp2.json();
+
   res.json({ success: true, message: "Thank You! we will get back you shortly" });
+
+  // res.json({ success: true, message: "Thank You! we will get back you shortly" });
 });
 
 app.post("/contact4", async (req, res) => {
@@ -419,6 +470,33 @@ app.post("/contact5", async (req, res) => {
             </div>
         `,
   });
+
+  // res.json({ success: true, message: "Thank You! we will get back you shortly" });
+  let resp1 = await fetch(`https://accounts.zoho.in/oauth/v2/token?grant_type=refresh_token&client_id=1000.FS0PE9O76Z2VG1XDJFGG49O4J77ZKF&client_secret=e49d2b9e743e403ebba076fd28a05a80f6e5815833&refresh_token=1000.7cabfb8e30f390c31275783a09f4b907.2aea28f36e7defada84b8e4dc38ce432`, {
+    method: 'POST'
+  });
+  let data1 = await resp1.json();
+  console.log(data1);
+  let resp2 = await fetch("https://www.zohoapis.in/crm/v4/Leads", {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${data1.access_token}`
+    },
+    body: JSON.stringify({
+      "data": [
+        {
+          "Department": technology,
+          "Website":products,
+          "Industry":Estore,
+          "First_Name": name6,
+          "Last_Name": "-",
+          "Email": email6,
+          "Phone": mobile6
+        }
+      ]
+    })
+  });
+  let data2 = await resp2.json();
 
   res.json({ success: true, message: "Thank You! we will get back you shortly" });
 });
