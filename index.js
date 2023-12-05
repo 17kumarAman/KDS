@@ -188,7 +188,7 @@ app.post("/contact1", async (req, res) => {
 //   });
 //   let data2 = await resp2.json();
 
-  res.json({ success: true, message: "Thank You! we will get back you shortly", data: { company1, name1, email1, phone1, service1, message1 } });
+  res.json({ success: true, message: "Thank You! we will get back you shortly", data: { company1, name1, email1, phone1, service1, message1 }, info1, info2 });
 });
 
 app.post("/contact2", async (req, res) => {
