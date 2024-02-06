@@ -20,12 +20,12 @@ app.post("/contact", async (req, res) => {
   console.log({ name, email, phone, service, message });
 
   let transporter = nodemailer.createTransport({
-    host: "mail.kusheldigi.com",
+    host: "smtp.gmail.com",
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-      user: "info@kusheldigi.com",
-      pass: "Kusheldigiinfo@2025",
+      user: "webmaster.kushel@gmail.com",
+      pass: "paurymswxlpytekp",
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -107,12 +107,12 @@ app.post("/contact1", async (req, res) => {
   // console.log({ company1, name1, email1, phone1, service1, message1 });
 
   let transporter = nodemailer.createTransport({
-    host: "mail.kusheldigi.com",
+    host: "smtp.gmail.com",
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-      user: "info@kusheldigi.com",
-      pass: "Kusheldigiinfo@2025",
+      user: "webmaster.kushel@gmail.com",
+      pass: "paurymswxlpytekp",
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -188,19 +188,19 @@ app.post("/contact1", async (req, res) => {
   });
   let data2 = await resp2.json();
 
-  res.json({ success: true, message: "Thank You! we will get back you shortly"});
+  res.json({ success: true, message: "Thank You! we will get back you shortly" });
 });
 
 app.post("/contact2", async (req, res) => {
   const { name2, phone2, email2, message2 } = req.body;
 
   let transporter = nodemailer.createTransport({
-    host: "mail.kusheldigi.com",
+    host: "smtp.gmail.com",
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-      user: "info@kusheldigi.com",
-      pass: "Kusheldigiinfo@2025",
+      user: "webmaster.kushel@gmail.com",
+      pass: "paurymswxlpytekp",
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -277,12 +277,12 @@ app.post("/contact3", async (req, res) => {
   const { name4, email4, requirement4 } = req.body;
 
   let transporter = nodemailer.createTransport({
-    host: "mail.kusheldigi.com",
+    host: "smtp.gmail.com",
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-      user: "info@kusheldigi.com",
-      pass: "Kusheldigiinfo@2025",
+      user: "webmaster.kushel@gmail.com",
+      pass: "paurymswxlpytekp",
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -358,12 +358,12 @@ app.post("/contact4", async (req, res) => {
   const { first_name, last_name, email_address, city, date, time, additional_msg } = req.body;
 
   let transporter = nodemailer.createTransport({
-    host: "mail.kusheldigi.com",
+    host: "smtp.gmail.com",
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-      user: "info@kusheldigi.com",
-      pass: "Kusheldigiinfo@2025",
+      user: "webmaster.kushel@gmail.com",
+      pass: "paurymswxlpytekp",
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -421,12 +421,12 @@ app.post("/contact5", async (req, res) => {
   const { technology, products, Estore, name6, mobile6, email6 } = req.body;
 
   let transporter = nodemailer.createTransport({
-    host: "mail.kusheldigi.com",
+    host: "smtp.gmail.com",
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-      user: "info@kusheldigi.com",
-      pass: "Kusheldigiinfo@2025",
+      user: "webmaster.kushel@gmail.com",
+      pass: "paurymswxlpytekp",
     },
     from: "info@kusheldigi.com",
     tls: {
