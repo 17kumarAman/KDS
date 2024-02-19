@@ -15,9 +15,9 @@ app.get("/", (req, res) => {
 });
 
 app.post("/contact", async (req, res) => {
-  const { name, email, phone, service, message } = req.body;
+  const { firstName, lastName, email, phone, service, message } = req.body;
 
-  console.log({ name, email, phone, service, message });
+  console.log({ firstName, lastName, email, phone, service, message });
 
   let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -42,7 +42,8 @@ app.post("/contact", async (req, res) => {
     subject: "Contact Form",
     text: `
         <div>
-            <div>Name: ${name}</div>
+            <div>FirstName: ${firstName}</div>
+            <div>LastName: ${lastName}</div>
             <div>Phone: ${phone}</div>
             <div>Email: ${email}</div>
             <div>Service: ${service}</div>
@@ -51,10 +52,11 @@ app.post("/contact", async (req, res) => {
     `,
     html: `
             <div>
-                <div>Name: ${name}</div>
-                <div>Phone: ${phone}</div>
-                <div>Email: ${email}</div>
-                <div>Service: ${service}</div>
+            <div>FirstName: ${firstName}</div>
+            <div>LastName: ${lastName}</div>
+            <div>Phone: ${phone}</div>
+            <div>Email: ${email}</div>
+            <div>Service: ${service}</div>
             <div>Message: ${message}</div>
             </div>
         `,
@@ -88,8 +90,8 @@ app.post("/contact", async (req, res) => {
       "data": [
         {
           "Department": service,
-          "First_Name": name,
-          "Last_Name": "-",
+          "First_Name": firstName,
+          "Last_Name": lastName,
           "Email": email,
           "Description": message,
           "Phone": phone
@@ -125,7 +127,7 @@ app.post("/contact1", async (req, res) => {
   // send mail with defined transport object
   let info1 = await transporter.sendMail({
     from: '"Kushel Digi Solutions" <webmaster.kushel@gmail.com>',
-    to: "webmaster.kushel@gmail.com",
+    to: "asitmandal492@gmail.com",
     subject: "Contact Form",
     text: `
         <div>
@@ -193,7 +195,7 @@ app.post("/contact1", async (req, res) => {
 
 app.post("/contact2", async (req, res) => {
   const { name2, phone2, email2, message2 } = req.body;
-
+  console.log({name2, phone2, email2, message2})
   let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
@@ -211,7 +213,7 @@ app.post("/contact2", async (req, res) => {
 
   let info2 = await transporter.sendMail({
     from: '"Kushel Digi Solutions" <webmaster.kushel@gmail.com>',
-    to: "webmaster.kushel@gmail.com",
+    to: "asitmandal492@gmail.com",
     subject: "Contact Form",
     replyTo: `${email2}`,
     text: `
@@ -295,7 +297,7 @@ app.post("/contact3", async (req, res) => {
   // send mail with defined transport object
   let info1 = await transporter.sendMail({
     from: '"Kushel Digi Solutions" <webmaster.kushel@gmail.com>',
-    to: "webmaster.kushel@gmail.com",
+    to: "asitmandal492@gmail.com",
     subject: "Contact Form",
     text: `
             Company: ${name4}, 
