@@ -1,11 +1,11 @@
 const express = require("express");
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 const nodemailer = require("nodemailer");
 const cors = require("cors");
 // const fs = require("fs");
 
-app.use(cors());
+app.use(cors({ origin: ['https://www.kusheldigi.com', 'http://localhost:3000'] }));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -15,17 +15,17 @@ app.get("/", (req, res) => {
 });
 
 app.post("/contact", async (req, res) => {
-  const { firstName, lastName, email, phone, service, message } = req.body;
+  const { name, email, phone } = req.body;
 
-  console.log({ firstName, lastName, email, phone, service, message });
+  console.log({ name, email, phone });
 
   let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: "smtpout.secureserver.net",
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-      user: "webmaster.kushel@gmail.com",
-      pass: "paurymswxlpytekp",
+      user: "info@kusheldigi.com",
+      pass: "Infokushel@12345"
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -37,31 +37,25 @@ app.post("/contact", async (req, res) => {
 
   // send mail with defined transport object
   let info = await transporter.sendMail({
-    from: '"Kushel Digi Solutions" <webmaster.kushel@gmail.com>',
-    to: "webmaster.kushel@gmail.com",
+    from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
+    to: "info@kusheldigi.com",
     subject: "Contact Form",
     text: `
         <div>
-            <div>FirstName: ${firstName}</div>
-            <div>LastName: ${lastName}</div>
-            <div>Phone: ${phone}</div>
+            <div>Name: ${name}</div>
+            <div>Phone:  ${phone}</div>
             <div>Email: ${email}</div>
-            <div>Service: ${service}</div>
-            <div>Message: ${message}</div>
         </div>
     `,
     html: `
             <div>
-            <div>FirstName: ${firstName}</div>
-            <div>LastName: ${lastName}</div>
+            <div>Name: ${name}</div>
             <div>Phone: ${phone}</div>
             <div>Email: ${email}</div>
-            <div>Service: ${service}</div>
-            <div>Message: ${message}</div>
             </div>
         `,
   });
-
+  console.log(info);
   let info1 = await transporter.sendMail({
     from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
     to: email,
@@ -71,16 +65,32 @@ app.post("/contact", async (req, res) => {
     `,
     html: `
             <div>
-                <div>Thank you! we will get back to you</div>
+              <div>Dear ${name}, </div>
+                <div>
+                <br/>
+Thank you for reaching out to Kushel Digi Solutions! We have received your message and are eager to learn more about how we can assist you in achieving your goals.
+Our team is reviewing your submission and will contact you within 24 hours with further details. We are dedicated to understanding your needs and providing tailored solutions that deliver meaningful results.
+If you have any additional information to share or further questions, please don’t hesitate to contact us directly at info@kusheldigi.com.
+Thank you for choosing Kushel Digi Solutions. We look forward to making your journey with us smooth, productive, and successful.
+<br/>
+Best regards,
+<br/>
+Shubham Gupta
+<br/>
+Kushel Digi Solutions Team</div>
             </div>
         `,
   });
 
-  let resp1 = await fetch(`https://accounts.zoho.in/oauth/v2/token?grant_type=refresh_token&client_id=1000.FS0PE9O76Z2VG1XDJFGG49O4J77ZKF&client_secret=e49d2b9e743e403ebba076fd28a05a80f6e5815833&refresh_token=1000.7cabfb8e30f390c31275783a09f4b907.2aea28f36e7defada84b8e4dc38ce432`, {
+  let resp1 = await fetch(`https://accounts.zoho.in/oauth/v2/token?grant_type=refresh_token&client_id=1000.TSQ83QJYU47JW4FU7JURI9T5KUG8LB&client_secret=ed7e36214a6904334234bf177081f4a4707008f35c&refresh_token=1000.4eab6e71eaaba27a388f70ee84e68ec1.6177b6e02f92adf73a7bfac070a4e9cd`, {
     method: 'POST'
   });
+
+
   let data1 = await resp1.json();
-  // console.log(data1);
+
+
+
   let resp2 = await fetch("https://www.zohoapis.in/crm/v4/Leads", {
     method: 'POST',
     headers: {
@@ -89,11 +99,9 @@ app.post("/contact", async (req, res) => {
     body: JSON.stringify({
       "data": [
         {
-          "Department": service,
-          "First_Name": firstName,
-          "Last_Name": lastName,
+
+          "First_Name": name,
           "Email": email,
-          "Description": message,
           "Phone": phone
         }
       ]
@@ -101,20 +109,168 @@ app.post("/contact", async (req, res) => {
   });
   let data2 = await resp2.json();
 
+  const response = await fetch('https://chat.bol7.com/api/whatsapp/send', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      sender: "919220784506",
+      to: `${phone}`,
+      type: "MARKETING",
+      data: {
+        name: "r12",
+        language: {
+          code: "en"
+        },
+        components: []
+      }
+    })
+  });
+
   res.json({ success: true, message: "Thank You! we will get back you shortly" });
 });
+
+
+
+
+
+// ============route for contact us page==========
+app.post("/contact11", async (req, res) => {
+  const { firstName11, email11, phone11, service11, message11 } = req.body;
+
+  console.log({ firstName11, email11, phone11, service11, message11 });
+
+  let transporter = nodemailer.createTransport({
+    host: "smtpout.secureserver.net",
+    port: 465,
+    secure: true, // true for 465, false for other ports
+    auth: {
+      user: "info@kusheldigi.com",
+      pass: "Infokushel@12345"
+    },
+    from: "info@kusheldigi.com",
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  // const htmlToSend = template(replacements);
+
+  // send mail with defined transport object
+  let info = await transporter.sendMail({
+    from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
+    to: "info@kusheldigi.com",
+    subject: "Contact Form",
+    text: `
+        <div>
+            <div>FirstName: ${firstName11}</div>
+            <div>Phone:  ${phone11}</div>
+            <div>Email: ${email11}</div>
+            <div>Service: ${service11}</div>
+            <div>Message: ${message11}</div>
+        </div>
+    `,
+    html: `
+            <div>
+            <div>FirstName: ${firstName11}</div>
+            <div>Phone: ${phone11}</div>
+            <div>Email: ${email11}</div>
+            <div>Service: ${service11}</div>
+            <div>Message: ${message11}</div>
+            </div>
+        `,
+  });
+  console.log(info);
+  let info1 = await transporter.sendMail({
+    from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
+    to: email11,
+    subject: "Contact Form",
+    text: `
+      Thank you
+    `,
+    html: `
+            <div>
+              <div>Dear ${firstName11}, </div>
+                <div>
+                <br/>
+Thank you for reaching out to Kushel Digi Solutions! We have received your message and are eager to learn more about how we can assist you in achieving your goals.
+Our team is reviewing your submission and will contact you within 24 hours with further details. We are dedicated to understanding your needs and providing tailored solutions that deliver meaningful results.
+If you have any additional information to share or further questions, please don’t hesitate to contact us directly at info@kusheldigi.com.
+Thank you for choosing Kushel Digi Solutions. We look forward to making your journey with us smooth, productive, and successful.
+<br/>
+Best regards,
+<br/>
+Shubham Gupta
+<br/>
+Kushel Digi Solutions Team</div>
+            </div>
+        `,
+  });
+
+  let resp1 = await fetch(`https://accounts.zoho.in/oauth/v2/token?grant_type=refresh_token&client_id=1000.TSQ83QJYU47JW4FU7JURI9T5KUG8LB&client_secret=ed7e36214a6904334234bf177081f4a4707008f35c&refresh_token=1000.4eab6e71eaaba27a388f70ee84e68ec1.6177b6e02f92adf73a7bfac070a4e9cd`, {
+    method: 'POST'
+  });
+
+
+  let data1 = await resp1.json();
+
+
+
+  let resp2 = await fetch("https://www.zohoapis.in/crm/v4/Leads", {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${data1.access_token}`
+    },
+    body: JSON.stringify({
+      "data": [
+        {
+          "Department": service11,
+          "First_Name": firstName11,
+          // "Last_Name": lastName11, 
+          "Email": email11,
+          "Description": message11,
+          "Phone": phone11
+        }
+      ]
+    })
+  });
+  let data2 = await resp2.json();
+
+  const response = await fetch('https://chat.bol7.com/api/whatsapp/send', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      sender: "919220784506",
+      to: `${phone11}`,
+      type: "MARKETING",
+      data: {
+        name: "r12",
+        language: {
+          code: "en"
+        },
+        components: []
+      }
+    })
+  });
+
+  res.json({ success: true, message: "Thank You! we will get back you shortly" });
+});
+// ================route for contact us page end===========
 
 app.post("/contact1", async (req, res) => {
   const { company1, name1, email1, phone1, service1, message1 } = req.body;
   // console.log({ company1, name1, email1, phone1, service1, message1 });
 
   let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: "smtpout.secureserver.net",
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-      user: "webmaster.kushel@gmail.com",
-      pass: "paurymswxlpytekp",
+      user: "info@kusheldigi.com",
+      pass: "Infokushel@12345"
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -126,8 +282,8 @@ app.post("/contact1", async (req, res) => {
 
   // send mail with defined transport object
   let info1 = await transporter.sendMail({
-    from: '"Kushel Digi Solutions" <webmaster.kushel@gmail.com>',
-    to: "asitmandal492@gmail.com",
+    from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
+    to: "info@kusheldigi.com",
     subject: "Contact Form",
     text: `
         <div>
@@ -160,7 +316,19 @@ app.post("/contact1", async (req, res) => {
     `,
     html: `
             <div>
-                <div>Thank you! we will get back to you</div>
+              <div>Dear ${name1}, </div>
+                <div>
+                <br/>
+Thank you for reaching out to Kushel Digi Solutions! We have received your message and are eager to learn more about how we can assist you in achieving your goals.
+Our team is reviewing your submission and will contact you within 24 hours with further details. We are dedicated to understanding your needs and providing tailored solutions that deliver meaningful results.
+If you have any additional information to share or further questions, please don’t hesitate to contact us directly at info@kusheldigi.com.
+Thank you for choosing Kushel Digi Solutions. We look forward to making your journey with us smooth, productive, and successful.
+<br/>
+Best regards,
+<br/>
+Shubham Gupta
+<br/>
+Kushel Digi Solutions Team</div>
             </div>
         `,
   });
@@ -195,14 +363,14 @@ app.post("/contact1", async (req, res) => {
 
 app.post("/contact2", async (req, res) => {
   const { name2, phone2, email2, message2 } = req.body;
-  console.log({name2, phone2, email2, message2})
+  console.log({ name2, phone2, email2, message2 })
   let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: "smtpout.secureserver.net",
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-      user: "webmaster.kushel@gmail.com",
-      pass: "paurymswxlpytekp",
+      user: "info@kusheldigi.com",
+      pass: "Infokushel@12345"
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -212,8 +380,8 @@ app.post("/contact2", async (req, res) => {
 
 
   let info2 = await transporter.sendMail({
-    from: '"Kushel Digi Solutions" <webmaster.kushel@gmail.com>',
-    to: "asitmandal492@gmail.com",
+    from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
+    to: "info@kusheldigi.com",
     subject: "Contact Form",
     replyTo: `${email2}`,
     text: `
@@ -242,8 +410,20 @@ app.post("/contact2", async (req, res) => {
       Thank you
     `,
     html: `
-            <div>
-                <div>Thank you! we will get back to you</div>
+             <div>
+              <div>Dear ${name2}, </div>
+                <div>
+                <br/>
+Thank you for reaching out to Kushel Digi Solutions! We have received your message and are eager to learn more about how we can assist you in achieving your goals.
+Our team is reviewing your submission and will contact you within 24 hours with further details. We are dedicated to understanding your needs and providing tailored solutions that deliver meaningful results.
+If you have any additional information to share or further questions, please don’t hesitate to contact us directly at info@kusheldigi.com.
+Thank you for choosing Kushel Digi Solutions. We look forward to making your journey with us smooth, productive, and successful.
+<br/>
+Best regards,
+<br/>
+Shubham Gupta
+<br/>
+Kushel Digi Solutions Team</div>
             </div>
         `,
   });
@@ -272,6 +452,25 @@ app.post("/contact2", async (req, res) => {
   });
   let data2 = await resp2.json();
 
+  const response = await fetch('https://chat.bol7.com/api/whatsapp/send', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      sender: "919220784506",
+      to: `${phone2}`,
+      type: "MARKETING",
+      data: {
+        name: "r12",
+        language: {
+          code: "en"
+        },
+        components: []
+      }
+    })
+  });
+
   res.json({ success: true, message: "Thank You! we will get back you shortly" });
 });
 
@@ -279,12 +478,12 @@ app.post("/contact3", async (req, res) => {
   const { name4, email4, requirement4 } = req.body;
 
   let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: "smtpout.secureserver.net",
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-      user: "webmaster.kushel@gmail.com",
-      pass: "paurymswxlpytekp",
+      user: "info@kusheldigi.com",
+      pass: "Infokushel@12345"
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -296,19 +495,19 @@ app.post("/contact3", async (req, res) => {
 
   // send mail with defined transport object
   let info1 = await transporter.sendMail({
-    from: '"Kushel Digi Solutions" <webmaster.kushel@gmail.com>',
-    to: "asitmandal492@gmail.com",
+    from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
+    to: "info@kusheldigi.com",
     subject: "Contact Form",
     text: `
-            Company: ${name4}, 
-            Name: ${email4}, 
-            Email: ${requirement4}, 
+            Name: ${name4}, 
+            Email: ${email4}, 
+            Requirement: ${requirement4}, 
     `,
     html: `
     <div>
-    <div>Company: ${name4}</div>
-    <div>Name: ${email4}</div>
-    <div>Email: ${requirement4}</div>
+    <div>Name: ${name4}</div>
+    <div>Email: ${email4}</div>
+    <div>Requirement: ${requirement4}</div>
 </div>
         `,
   });
@@ -322,7 +521,19 @@ app.post("/contact3", async (req, res) => {
     `,
     html: `
             <div>
-                <div>Thank you! we will get back to you</div>
+              <div>Dear ${name4}, </div>
+                <div>
+                <br/>
+Thank you for reaching out to Kushel Digi Solutions! We have received your message and are eager to learn more about how we can assist you in achieving your goals.
+Our team is reviewing your submission and will contact you within 24 hours with further details. We are dedicated to understanding your needs and providing tailored solutions that deliver meaningful results.
+If you have any additional information to share or further questions, please don’t hesitate to contact us directly at info@kusheldigi.com.
+Thank you for choosing Kushel Digi Solutions. We look forward to making your journey with us smooth, productive, and successful.
+<br/>
+Best regards,
+<br/>
+Shubham Gupta
+<br/>
+Kushel Digi Solutions Team</div>
             </div>
         `,
   });
@@ -360,12 +571,12 @@ app.post("/contact4", async (req, res) => {
   const { first_name, last_name, email_address, city, date, time, additional_msg } = req.body;
 
   let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: "smtpout.secureserver.net",
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-      user: "webmaster.kushel@gmail.com",
-      pass: "paurymswxlpytekp",
+      user: "info@kusheldigi.com",
+      pass: "Infokushel@12345"
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -377,8 +588,8 @@ app.post("/contact4", async (req, res) => {
 
   // send mail with defined transport object
   let info1 = await transporter.sendMail({
-    from: '"Kushel Digi Solutions" <webmaster.kushel@gmail.com>',
-    to: "webmaster.kushel@gmail.com",
+    from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
+    to: "info@kusheldigi.com",
     subject: "Contact Form",
     text: `
             FirstName: ${first_name}, 
@@ -411,7 +622,19 @@ app.post("/contact4", async (req, res) => {
     `,
     html: `
             <div>
-                <div>Thank you! we will get back to you</div>
+              <div>Dear ${first_name}, </div>
+                <div>
+   <br/>
+Thank you for reaching out to Kushel Digi Solutions! We have received your message and are eager to learn more about how we can assist you in achieving your goals.
+Our team is reviewing your submission and will contact you within 24 hours with further details. We are dedicated to understanding your needs and providing tailored solutions that deliver meaningful results.
+If you have any additional information to share or further questions, please don’t hesitate to contact us directly at info@kusheldigi.com.
+Thank you for choosing Kushel Digi Solutions. We look forward to making your journey with us smooth, productive, and successful.
+<br/>
+Best regards,
+<br/>
+Shubham Gupta
+<br/>
+Kushel Digi Solutions Team</div>
             </div>
         `,
   });
@@ -423,12 +646,12 @@ app.post("/contact5", async (req, res) => {
   const { technology, products, Estore, name6, mobile6, email6 } = req.body;
 
   let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: "smtpout.secureserver.net",
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-      user: "webmaster.kushel@gmail.com",
-      pass: "paurymswxlpytekp",
+      user: "info@kusheldigi.com",
+      pass: "Infokushel@12345"
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -472,7 +695,19 @@ app.post("/contact5", async (req, res) => {
     `,
     html: `
             <div>
-                <div>Thank you! we will get back to you</div>
+              <div>Dear ${name6}, </div>
+                <div>
+                <br/>
+Thank you for reaching out to Kushel Digi Solutions! We have received your message and are eager to learn more about how we can assist you in achieving your goals.
+Our team is reviewing your submission and will contact you within 24 hours with further details. We are dedicated to understanding your needs and providing tailored solutions that deliver meaningful results.
+If you have any additional information to share or further questions, please don’t hesitate to contact us directly at info@kusheldigi.com.
+Thank you for choosing Kushel Digi Solutions. We look forward to making your journey with us smooth, productive, and successful.
+<br/>
+Best regards,
+<br/>
+Shubham Gupta
+<br/>
+Kushel Digi Solutions Team</div>
             </div>
         `,
   });
