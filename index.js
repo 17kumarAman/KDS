@@ -137,9 +137,9 @@ Kushel Digi Solutions Team</div>
 
 // ============route for contact us page==========
 app.post("/contact11", async (req, res) => {
-  const { firstName11, email11, phone11, service11, message11 } = req.body;
+  const { name11, email11, phone11, service11, message11 } = req.body;
 
-  console.log({ firstName11, email11, phone11, service11, message11 });
+  console.log({ name11, email11, phone11, service11, message11 });
 
   let transporter = nodemailer.createTransport({
     host: "smtpout.secureserver.net",
@@ -164,7 +164,7 @@ app.post("/contact11", async (req, res) => {
     subject: "Contact Form",
     text: `
         <div>
-            <div>FirstName: ${firstName11}</div>
+            <div>Name: ${name11}</div>
             <div>Phone:  ${phone11}</div>
             <div>Email: ${email11}</div>
             <div>Service: ${service11}</div>
@@ -173,7 +173,7 @@ app.post("/contact11", async (req, res) => {
     `,
     html: `
             <div>
-            <div>FirstName: ${firstName11}</div>
+            <div>Name: ${name11}</div>
             <div>Phone: ${phone11}</div>
             <div>Email: ${email11}</div>
             <div>Service: ${service11}</div>
@@ -182,36 +182,55 @@ app.post("/contact11", async (req, res) => {
         `,
   });
   console.log(info);
-  let info1 = await transporter.sendMail({
-    from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
-    to: email11,
-    subject: "Contact Form",
-    text: `
-      Thank you
-    `,
-    html: `
-            <div>
-              <div>Dear ${firstName11}, </div>
-                <div>
-                <br/>
-Thank you for reaching out to Kushel Digi Solutions! We have received your message and are eager to learn more about how we can assist you in achieving your goals.
-Our team is reviewing your submission and will contact you within 24 hours with further details. We are dedicated to understanding your needs and providing tailored solutions that deliver meaningful results.
-If you have any additional information to share or further questions, please don’t hesitate to contact us directly at info@kusheldigi.com.
-Thank you for choosing Kushel Digi Solutions. We look forward to making your journey with us smooth, productive, and successful.
-<br/>
-Best regards,
-<br/>
-Shubham Gupta
-<br/>
-Kushel Digi Solutions Team</div>
-            </div>
-        `,
+  let hrms = await fetch(`https://amanbackend.kusheldigi.com/lead/createExternalLead?id=685e3eb91f7c9324729aa63c`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      FirstName: name11,
+      Phone: phone11,
+      Email: email11,
+      DescriptionInfo: message11,
+      LeadSource: "External Referral"
+    })
   });
+
+
+  // console.log("Server response:", response);
+
+    let info1 = await transporter.sendMail({
+      from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
+      to: email11,
+      subject: "Contact Form",
+      text: `
+        Thank you
+      `,
+      html: `
+              <div>
+                <div>Dear ${name11}, </div>
+                  <div>
+                  <br/>
+  Thank you for reaching out to Kushel Digi Solutions! We have received your message and are eager to learn more about how we can assist you in achieving your goals.
+  Our team is reviewing your submission and will contact you within 24 hours with further details. We are dedicated to understanding your needs and providing tailored solutions that deliver meaningful results.
+  If you have any additional information to share or further questions, please don’t hesitate to contact us directly at info@kusheldigi.com.
+  Thank you for choosing Kushel Digi Solutions. We look forward to making your journey with us smooth, productive, and successful.
+  <br/>
+  Best regards,
+  <br/>
+  Shubham Gupta
+  <br/>
+  Kushel Digi Solutions Team</div>
+              </div>
+          `,
+    });
 
   let resp1 = await fetch(`https://accounts.zoho.in/oauth/v2/token?grant_type=refresh_token&client_id=1000.TSQ83QJYU47JW4FU7JURI9T5KUG8LB&client_secret=ed7e36214a6904334234bf177081f4a4707008f35c&refresh_token=1000.4eab6e71eaaba27a388f70ee84e68ec1.6177b6e02f92adf73a7bfac070a4e9cd`, {
     method: 'POST'
   });
 
+  let data5 = await hrms.json()
+  console.log(data5)
 
   let data1 = await resp1.json();
 
@@ -226,7 +245,7 @@ Kushel Digi Solutions Team</div>
       "data": [
         {
           "Department": service11,
-          "First_Name": firstName11,
+          "First_Name": name11,
           // "Last_Name": lastName11, 
           "Email": email11,
           "Description": message11,
