@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 const nodemailer = require("nodemailer");
 const cors = require("cors");
 // const fs = require("fs");
@@ -682,8 +682,8 @@ app.post("/contact5", async (req, res) => {
 
   // send mail with defined transport object
   let info1 = await transporter.sendMail({
-    from: '"Kushel Digi Solutions" <webmaster.kushel@gmail.com>',
-    to: "webmaster.kushel@gmail.com",
+    from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
+    to: "info@kusheldigi.com",
     subject: "Contact Form",
     text: `
             Technology: ${technology}, 
