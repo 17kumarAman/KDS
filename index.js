@@ -38,7 +38,7 @@ app.post("/contact", async (req, res) => {
   // send mail with defined transport object
   let info = await transporter.sendMail({
     from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
-    to: "info@kusheldigi.com",
+    to: "sales@kusheldigi.us",
     subject: "Contact Form",
     text: `
         <div>
@@ -160,7 +160,7 @@ app.post("/contact11", async (req, res) => {
   // send mail with defined transport object
   let info = await transporter.sendMail({
     from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
-    to: "info@kusheldigi.com",
+    to: "sales@kusheldigi.us",
     subject: "Contact Form",
     text: `
         <div>
@@ -302,7 +302,7 @@ app.post("/contact1", async (req, res) => {
   // send mail with defined transport object
   let info1 = await transporter.sendMail({
     from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
-    to: "info@kusheldigi.com",
+    to: "sales@kusheldigi.us",
     subject: "Contact Form",
     text: `
         <div>
@@ -400,7 +400,7 @@ app.post("/contact2", async (req, res) => {
 
   let info2 = await transporter.sendMail({
     from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
-    to: "info@kusheldigi.com",
+    to: "sales@kusheldigi.us",
     subject: "Contact Form",
     replyTo: `${email2}`,
     text: `
@@ -515,7 +515,7 @@ app.post("/contact3", async (req, res) => {
   // send mail with defined transport object
   let info1 = await transporter.sendMail({
     from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
-    to: "info@kusheldigi.com",
+    to: "sales@kusheldigi.us",
     subject: "Contact Form",
     text: `
             Name: ${name4}, 
@@ -608,7 +608,7 @@ app.post("/contact4", async (req, res) => {
   // send mail with defined transport object
   let info1 = await transporter.sendMail({
     from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
-    to: "info@kusheldigi.com",
+    to: "sales@kusheldigi.us",
     subject: "Contact Form",
     text: `
             FirstName: ${first_name}, 
@@ -683,7 +683,7 @@ app.post("/contact5", async (req, res) => {
   // send mail with defined transport object
   let info1 = await transporter.sendMail({
     from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
-    to: "info@kusheldigi.com",
+    to: "sales@kusheldigi.us",
     subject: "Contact Form",
     text: `
             Technology: ${technology}, 
