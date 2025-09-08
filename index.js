@@ -5,7 +5,7 @@ const nodemailer = require("nodemailer");
 const cors = require("cors");
 // const fs = require("fs");
 
-app.use(cors({ origin: ['https://www.kusheldigi.com', 'http://localhost:3000'] }));
+app.use(cors({ origin: ['https://www.kusheldigi.com', 'http://localhost:3001'] }));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -25,7 +25,7 @@ app.post("/contact", async (req, res) => {
     secure: true, // true for 465, false for other ports
     auth: {
       user: "info@kusheldigi.com",
-      pass: "KRC@infokds"
+      pass: "Infokusheldigi@3030"
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -147,7 +147,7 @@ app.post("/contact11", async (req, res) => {
     secure: true, // true for 465, false for other ports
     auth: {
       user: "info@kusheldigi.com",
-      pass: "KRC@infokds"
+      pass: "Infokusheldigi@3030"
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -289,7 +289,7 @@ app.post("/contact1", async (req, res) => {
     secure: true, // true for 465, false for other ports
     auth: {
       user: "info@kusheldigi.com",
-      pass: "KRC@infokds"
+      pass: "Infokusheldigi@3030"
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -389,7 +389,7 @@ app.post("/contact2", async (req, res) => {
     secure: true, // true for 465, false for other ports
     auth: {
       user: "info@kusheldigi.com",
-      pass: "KRC@infokds"
+      pass: "Infokusheldigi@3030"
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -502,7 +502,7 @@ app.post("/contact3", async (req, res) => {
     secure: true, // true for 465, false for other ports
     auth: {
       user: "info@kusheldigi.com",
-      pass: "KRC@infokds"
+      pass: "Infokusheldigi@3030"
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -595,7 +595,7 @@ app.post("/contact4", async (req, res) => {
     secure: true, // true for 465, false for other ports
     auth: {
       user: "info@kusheldigi.com",
-      pass: "KRC@infokds"
+      pass: "Infokusheldigi@3030"
     },
     from: "info@kusheldigi.com",
     tls: {
@@ -670,7 +670,7 @@ app.post("/contact5", async (req, res) => {
     secure: true, // true for 465, false for other ports
     auth: {
       user: "info@kusheldigi.com",
-      pass: "KRC@infokds"
+      pass: "Infokusheldigi@3030"
     },
     from: "info@kusheldigi.com",
     tls: {
