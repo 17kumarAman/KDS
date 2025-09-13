@@ -5,7 +5,7 @@ const nodemailer = require("nodemailer");
 const cors = require("cors");
 // const fs = require("fs");
 
-app.use(cors({ origin: ['https://www.kusheldigi.com', 'http://localhost:3001'] }));
+app.use(cors({ origin: ['https://www.kusheldigi.com', 'http://localhost:3000'] }));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
