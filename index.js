@@ -5,7 +5,12 @@ const nodemailer = require("nodemailer");
 const cors = require("cors");
 // const fs = require("fs");
 
-app.use(cors({ origin: ['https://www.kusheldigi.com', 'http://localhost:3000'] }));
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+}));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -199,14 +204,14 @@ app.post("/contact11", async (req, res) => {
 
   // console.log("Server response:", response);
 
-    let info1 = await transporter.sendMail({
-      from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
-      to: email11,
-      subject: "Contact Form",
-      text: `
+  let info1 = await transporter.sendMail({
+    from: '"Kushel Digi Solutions" <info@kusheldigi.com>',
+    to: email11,
+    subject: "Contact Form",
+    text: `
         Thank you
       `,
-      html: `
+    html: `
               <div>
                 <div>Dear ${name11}, </div>
                   <div>
@@ -223,7 +228,7 @@ app.post("/contact11", async (req, res) => {
   Kushel Digi Solutions Team</div>
               </div>
           `,
-    });
+  });
 
   let resp1 = await fetch(`https://accounts.zoho.in/oauth/v2/token?grant_type=refresh_token&client_id=1000.TSQ83QJYU47JW4FU7JURI9T5KUG8LB&client_secret=ed7e36214a6904334234bf177081f4a4707008f35c&refresh_token=1000.4eab6e71eaaba27a388f70ee84e68ec1.6177b6e02f92adf73a7bfac070a4e9cd`, {
     method: 'POST'
