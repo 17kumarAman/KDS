@@ -110,19 +110,25 @@ const sendEmail = async (to, subject, html) => {
 };
 
 const getThankYouEmail = (name) => `
-  <div>
-    <div>Dear ${name},</div>
-    <div><br/>
-      Thank you for reaching out to Kushel Digi Solutions! We have received your message and are eager to learn more about how we can assist you in achieving your goals.
-      Our team is reviewing your submission and will contact you within 24 hours with further details. We are dedicated to understanding your needs and providing tailored solutions that deliver meaningful results.
-      If you have any additional information to share or further questions, please don't hesitate to contact us directly at kevin.digitalgrowthus@gmail.com.
-      Thank you for choosing Kushel Digi Solutions. We look forward to making your journey with us smooth, productive, and successful.
-      <br/>Best regards,<br/>
-      Shubham Gupta<br/>
-      Kushel Digi Solutions Team
-    </div>
+  <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+    <p>Dear ${name},</p>
+    <p>
+      Thank you for contacting <strong>Kushel Digi Solutions</strong>! We’ve received your message 
+      and one of our team members will reach out within 24 hours.
+    </p>
+    <p>
+      We’re excited to understand your needs and help you achieve your goals. 
+      Meanwhile, feel free to share any additional details at 
+      <a href="mailto:info@kusheldigi.com" style="color: #0073e6;">info@kusheldigi.com</a>.
+    </p>
+    <p>
+      Best regards,<br/>
+      <strong>Shubham Gupta</strong><br/>
+      Kushel Digi Solutions
+    </p>
   </div>
 `;
+
 
 // Routes
 app.get("/", (req, res) => res.send("Server is running"));
@@ -137,7 +143,7 @@ app.post("/contact", async (req, res) => {
       getZohoToken(ZOHO_CONFIG.client1),
       sendEmail("aman.kusheldigi@gmail.com", "Contact Form", 
         `<div><div>Name: ${name}</div><div>Phone: ${phone}</div><div>Email: ${email}</div></div>`),
-      sendEmail(email, "Contact Form", getThankYouEmail(name))
+      sendEmail(email, "Thanks for Reaching Out to Kushel Digi Solutions", getThankYouEmail(name))
     ]);
     
     // Non-blocking operations
@@ -162,7 +168,7 @@ app.post("/contact11", async (req, res) => {
       getZohoToken(ZOHO_CONFIG.client1),
       sendEmail("aman.kusheldigi@gmail.com", "Contact Form", 
         `<div><div>Name: ${name11}</div><div>Phone: ${phone11}</div><div>Email: ${email11}</div><div>Service: ${service11}</div><div>Message: ${message11}</div></div>`),
-      sendEmail(email11, "Contact Form", getThankYouEmail(name11)),
+      sendEmail(email11, "Thanks for Reaching Out to Kushel Digi Solutions", getThankYouEmail(name11)),
       fetch("https://prdbackend.kdscrm.com/lead/createExternalLead?id=685e3eb91f7c9324729aa63c", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -203,7 +209,7 @@ app.post("/contact1", async (req, res) => {
       getZohoToken(ZOHO_CONFIG.client2),
       sendEmail("aman.kusheldigi@gmail.com", "Contact Form", 
         `<div><div>Company: ${company1}</div><div>Name: ${name1}</div><div>Email: ${email1}</div><div>Phone: ${phone1}</div><div>Service: ${service1}</div><div>Message: ${message1}</div></div>`),
-      sendEmail(email1, "Contact Form", getThankYouEmail(name1))
+      sendEmail(email1, "Thanks for Reaching Out to Kushel Digi Solutions", getThankYouEmail(name1))
     ]);
     
     createZohoLead(token, {
@@ -231,7 +237,7 @@ app.post("/contact2", async (req, res) => {
       getZohoToken(ZOHO_CONFIG.client2),
       sendEmail("aman.kusheldigi@gmail.com", "Contact Form", 
         `<div><div>Name: ${name2}</div><div>phone: ${phone2}</div><div>email: ${email2}</div><div>Message: ${message2}</div></div>`),
-      sendEmail(email2, "Contact Form", getThankYouEmail(name2))
+      sendEmail(email2, "Thanks for Reaching Out to Kushel Digi Solutions", getThankYouEmail(name2))
     ]);
     
     Promise.all([
@@ -261,7 +267,7 @@ app.post("/contact3", async (req, res) => {
       getZohoToken(ZOHO_CONFIG.client2),
       sendEmail("aman.kusheldigi@gmail.com", "Contact Form", 
         `<div><div>Name: ${name4}</div><div>Email: ${email4}</div><div>Requirement: ${requirement4}</div></div>`),
-      sendEmail(email4, "Contact Form", getThankYouEmail(name4))
+      sendEmail(email4, "Thanks for Reaching Out to Kushel Digi Solutions", getThankYouEmail(name4))
     ]);
     
     createZohoLead(token, {
@@ -286,7 +292,7 @@ app.post("/contact4", async (req, res) => {
     await Promise.all([
       sendEmail("aman.kusheldigi@gmail.com", "Contact Form", 
         `<div><div>FirstName: ${first_name}</div><div>LastName: ${last_name}</div><div>EmailAddress: ${email_address}</div><div>City: ${city}</div><div>Date: ${date}</div><div>Time: ${time}</div><div>AdditionalMessage: ${additional_msg}</div></div>`),
-      sendEmail(email_address, "Contact Form", getThankYouEmail(first_name))
+      sendEmail(email_address, "Thanks for Reaching Out to Kushel Digi Solutions", getThankYouEmail(first_name))
     ]);
     
     res.json({ success: true, message: "Thank You! we will get back you shortly" });
@@ -305,7 +311,7 @@ app.post("/contact5", async (req, res) => {
       getZohoToken(ZOHO_CONFIG.client2),
       sendEmail("aman.kusheldigi@gmail.com", "Contact Form", 
         `<div><div>Technology: ${technology}</div><div>Products: ${products}</div><div>E-store: ${Estore}</div><div>Name: ${name6}</div><div>Mobile: ${mobile6}</div><div>Email: ${email6}</div></div>`),
-      sendEmail(email6, "Contact Form", getThankYouEmail(name6))
+      sendEmail(email6, "Thanks for Reaching Out to Kushel Digi Solutions", getThankYouEmail(name6))
     ]);
     
     createZohoLead(token, {
