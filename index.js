@@ -320,7 +320,7 @@ app.post("/contact", async (req, res) => {
         Phone: phone,
         Email: email,
         DescriptionInfo: `${page || "From Website Pages"}`,
-        LeadSource: "External Referral",
+        LeadSource: "website",
       }),
       sendWhatsApp(phone),
     ]).catch((err) =>
@@ -364,7 +364,7 @@ app.post("/contact11", async (req, res) => {
         Phone: phone11,
         Email: email11,
         DescriptionInfo: message11 + (page ? ` | Page: ${page}` : ""),
-        LeadSource: "External Referral",
+        LeadSource: "website",
       }),
     ]);
 
@@ -427,7 +427,7 @@ app.post("/contact1", async (req, res) => {
         Phone: phone1,
         Email: email1,
         DescriptionInfo: message1 + (page ? ` | Page: ${page}` : ""),
-        LeadSource: "External Referral",
+        LeadSource: "website",
       }),
     ]);
 
@@ -480,7 +480,7 @@ app.post("/contact2", async (req, res) => {
         Phone: phone2,
         Email: email2,
         DescriptionInfo: message2 + (page ? ` | Page: ${page}` : ""), // ✅ String me diya
-        LeadSource: "External Referral",
+        LeadSource: "website",
       }),
     ]);
 
@@ -530,11 +530,11 @@ app.post("/contact3", async (req, res) => {
       ),
     ]);
     createExternalLead({
-      FirstName: name2,
-      Phone: phone2,
-      Email: email2,
+      FirstName: name4,
+      Phone: '',
+      Email: email4,
       DescriptionInfo: { page: page || "From Website Pages" }, // ❌ Object bhej rahe ho
-      LeadSource: "External Referral",
+      LeadSource: "website",
     }),
       createZohoLead(token, {
         First_Name: name4,
@@ -587,7 +587,7 @@ app.post("/contact4", async (req, res) => {
         FirstName: first_name,
         Email: email_address,
         DescriptionInfo: { page: page || "From Website Pages" },
-        LeadSource: "External Referral",
+        LeadSource: "website",
       }),
     ]);
 
@@ -629,7 +629,7 @@ app.post("/contact5", async (req, res) => {
         Phone: mobile6,
         Email: email6,
         DescriptionInfo: { page: page || "From Website Pages" },
-        LeadSource: "External Referral",
+        LeadSource: "website",
       }),
     ]);
 
