@@ -222,7 +222,7 @@ const getThankYouEmail = (name) => `
           <!-- Header -->
           <tr>
             <td align="center" style="background:linear-gradient(135deg, #0073e6, #00bcd4); padding:25px 15px;">
-              <img src="https://res.cloudinary.com/dd9tagtiw/image/upload/v1759210988/logo_zckmvw_axxbcz.png"
+              <img src="https://kusheldigi.s3.ap-south-1.amazonaws.com/Kds-logo-white.png"
                    alt="Kushel Digi Solutions"
                    width="180"
                    style="width:100%; max-width:180px; height:auto; display:block; margin:0 auto;">
