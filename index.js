@@ -3,7 +3,7 @@ const nodemailer = require("nodemailer");
 const cors = require("cors");
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({ origin: "*" })); // All domains support
@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
   secure: true,
   auth: {
     user: "info@kusheldigi.com",
-    pass: "info@kusheldigi@321",
+    pass: "infopasswordnew@098765",
   },
   from: "info@kusheldigi.com",
   tls: {
@@ -695,6 +695,6 @@ app.post("/test", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`\n🚀 Server is running on port ${PORT}`);
+  console.log(`\n🚀 Server is running on  http://localhost:${PORT}`);
   console.log(`📊 Logging enabled for all operations\n`);
 });
