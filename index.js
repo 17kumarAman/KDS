@@ -129,8 +129,7 @@ const createExternalLead = async (leadData) => {
       const result = await resp.json();
       if (result.status) {
         console.log(
-          `✅ External Lead Created: ID=${
-            result.data?._id || "Unknown"
+          `✅ External Lead Created: ID=${result.data?._id || "Unknown"
           }, Name=${leadData.FirstName}, Phone=${leadData.Phone}`
         );
         return result;
@@ -200,143 +199,275 @@ const sendEmail = async (to, subject, html) => {
     console.log(`✅ Email Sent: To=${to}, Subject="${subject}"`);
     return true;
   } catch (error) {
-    console.error(`❌ Email Error: To=${to}, Error=${error.message}`);
-    return false;
+    console.error(`❌ Email Error: ${error.message}`);
+    throw new Error(error.message || "Email sending failed");
   }
 };
 
-const getThankYouEmail = (name) => `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Thank You - Kushel Digi Solutions</title>
-</head>
-<body style="margin:0; padding:0; background-color:#f6f9fc; font-family:'Helvetica Neue', Arial, sans-serif;">
-  <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background-color:#f6f9fc; padding:30px 10px;">
-    <tr>
-      <td align="center">
-        <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px; background:#ffffff; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1); overflow:hidden;">
-          
-          <!-- Header -->
-          <tr>
-            <td align="center" style="background:linear-gradient(135deg, #0073e6, #00bcd4); padding:25px 15px;">
-              <img src="https://kusheldigi.s3.ap-south-1.amazonaws.com/Kds-logo-white.png"
-                   alt="Kushel Digi Solutions"
-                   width="180"
-                   style="width:100%; max-width:180px; height:auto; display:block; margin:0 auto;">
-            </td>
-          </tr>
+// ---- Normalize incoming data ---- //
+function normalizePayload(body) {
+  const keyMapping = {
+    name: [
+      "name", "name1", "name2", "name4", "name6", "name11",
+      "fullName", "firstName", "first_name"
+    ],
 
-          <!-- Body -->
-          <tr>
-            <td style="padding:25px 20px 20px 20px; color:#333333; font-size:16px; line-height:1.7; word-break:break-word;">
-              <p style="margin:0 0 15px 0; font-size:18px; font-weight:bold;">Dear ${name},</p>
-              <p style="margin:0 0 15px 0;">
-                Thank you for reaching out to <strong>Kushel Digi Solutions</strong>!
-                We’ve successfully received your message, and one of our team members will contact you within 
-                <strong>24 hours</strong>.
-              </p>
-              <p style="margin:0 0 15px 0;">
-                We’re thrilled to learn more about your goals and craft a digital solution that fits your vision. 
-                Meanwhile, you can email us anytime at 
-                <a href="mailto:info@kusheldigi.com" style="color:#0073e6; text-decoration:none;">info@kusheldigi.com</a>.
-              </p>
-              <p style="margin:0;">
-                Warm regards,<br>
-                <strong>Kushel Digi Team</strong>
-              </p>
-            </td>
-          </tr>
+    email: [
+      "email", "email1", "email2", "email4", "email6", "email11",
+      "email_address"
+    ],
 
-          <!-- CTA -->
-          <tr>
-            <td align="center" style="padding:25px 15px;">
-              <a href="https://kusheldigi.com"
-                 style="background:#0073e6; color:#ffffff; padding:14px 28px; border-radius:6px; font-weight:bold; text-decoration:none; display:inline-block; font-size:16px;">
-                 Visit Our Website
-              </a>
-            </td>
-          </tr>
+    phone: [
+      "phone", "phone1", "phone2", "phone11", "mobile", "mobile6"
+    ],
 
-          <!-- Footer -->
-          <tr>
-            <td align="center" style="background:#f0f4f8; padding:20px 10px; font-size:13px; color:#777777; line-height:1.6;">
-              <p style="margin:0;">© ${new Date().getFullYear()} Kushel Digi Solutions. All rights reserved.</p>
-              <p style="margin:8px 0 0 0;">
-                Follow us:
-                <a href="https://www.linkedin.com/company/kusheldigisolutions/posts/?feedView=all" style="color:#0073e6; text-decoration:none;">LinkedIn</a> •
-                <a href="https://www.instagram.com/kusheldigi/?hl=en" style="color:#0073e6; text-decoration:none;">Instagram</a> •
-                <a href="https://www.facebook.com/kusheldigisolutions/" style="color:#0073e6; text-decoration:none;">Facebook</a>
-              </p>
-            </td>
-          </tr>
+    // service-only keys
+    service: [
+      "service", "service1", "service11", "serviceSelected", "requirement4"
+    ],
 
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>
-`;
+    message: [
+      "message", "message1", "message2", "message11", "msg",
+      "additional_msg"
+    ],
+
+    page: [
+      "page", "pageUrl", "sourcePage"
+    ],
+
+    city: ["city"],
+    date: ["date"],
+    time: ["time"],
+    company: ["company1"],
+
+    // NEW: these should be separate
+    technology: ["technology"],
+    products: ["products"],
+    Estore: ["Estore"]
+  };
+
+  const result = {};
+
+  for (const finalKey in keyMapping) {
+    const possibleKeys = keyMapping[finalKey];
+    const foundKey = possibleKeys.find(key => body[key] !== undefined);
+    result[finalKey] = foundKey ? body[foundKey] : "";
+  }
+
+  return result;
+}
+
+// ---- Email Body Maker ---- //
+function buildEmailHTML(data) {
+  return `
+    <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+      ${data.company && `<p><strong>Company:</strong> ${data.company}</p>`}
+      <p><strong>Name:</strong> ${data.name}</p>
+      <p><strong>Email:</strong> ${data.email}</p>
+      <p><strong>Phone:</strong> ${data.phone}</p>
+
+      ${data.city && `<p><strong>City:</strong> ${data.city}</p>`}
+      ${data.date && `<p><strong>Date:</strong> ${data.date}</p>`}
+      ${data.time && `<p><strong>Time:</strong> ${data.time}</p>`}
+
+      ${data.technology && `<p><strong>Technology:</strong> ${data.technology}</p>`}
+      ${data.products && `<p><strong>Products:</strong> ${data.products}</p>`}
+      ${data.Estore && `<p><strong>E-Store:</strong> ${data.Estore}</p>`}
+
+      ${data.service && `<p><strong>Service / Requirement:</strong> ${data.service}</p>`}
+      ${data.message && `<p><strong>Message:</strong> ${data.message}</p>`}
+
+      ${data.page && `<p><strong>Page:</strong> ${data.page}</p>`}
+    </div>
+  `;
+}
+
+
+// const getThankYouEmail = (name) => `
+// <!DOCTYPE html>
+// <html lang="en">
+// <head>
+//   <meta charset="UTF-8" />
+//   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+//   <title>Thank You - Kushel Digi Solutions</title>
+// </head>
+// <body style="margin:0; padding:0; background-color:#f6f9fc; font-family:'Helvetica Neue', Arial, sans-serif;">
+//   <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background-color:#f6f9fc; padding:30px 10px;">
+//     <tr>
+//       <td align="center">
+//         <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px; background:#ffffff; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1); overflow:hidden;">
+
+//           <!-- Header -->
+//           <tr>
+//             <td align="center" style="background:linear-gradient(135deg, #0073e6, #00bcd4); padding:25px 15px;">
+//               <img src="https://kusheldigi.s3.ap-south-1.amazonaws.com/Kds-logo-white.png"
+//                    alt="Kushel Digi Solutions"
+//                    width="180"
+//                    style="width:100%; max-width:180px; height:auto; display:block; margin:0 auto;">
+//             </td>
+//           </tr>
+
+//           <!-- Body -->
+//           <tr>
+//             <td style="padding:25px 20px 20px 20px; color:#333333; font-size:16px; line-height:1.7; word-break:break-word;">
+//               <p style="margin:0 0 15px 0; font-size:18px; font-weight:bold;">Dear ${name},</p>
+//               <p style="margin:0 0 15px 0;">
+//                 Thank you for reaching out to <strong>Kushel Digi Solutions</strong>!
+//                 We’ve successfully received your message, and one of our team members will contact you within 
+//                 <strong>24 hours</strong>.
+//               </p>
+//               <p style="margin:0 0 15px 0;">
+//                 We’re thrilled to learn more about your goals and craft a digital solution that fits your vision. 
+//                 Meanwhile, you can email us anytime at 
+//                 <a href="mailto:info@kusheldigi.com" style="color:#0073e6; text-decoration:none;">info@kusheldigi.com</a>.
+//               </p>
+//               <p style="margin:0;">
+//                 Warm regards,<br>
+//                 <strong>Kushel Digi Team</strong>
+//               </p>
+//             </td>
+//           </tr>
+
+//           <!-- CTA -->
+//           <tr>
+//             <td align="center" style="padding:25px 15px;">
+//               <a href="https://kusheldigi.com"
+//                  style="background:#0073e6; color:#ffffff; padding:14px 28px; border-radius:6px; font-weight:bold; text-decoration:none; display:inline-block; font-size:16px;">
+//                  Visit Our Website
+//               </a>
+//             </td>
+//           </tr>
+
+//           <!-- Footer -->
+//           <tr>
+//             <td align="center" style="background:#f0f4f8; padding:20px 10px; font-size:13px; color:#777777; line-height:1.6;">
+//               <p style="margin:0;">© ${new Date().getFullYear()} Kushel Digi Solutions. All rights reserved.</p>
+//               <p style="margin:8px 0 0 0;">
+//                 Follow us:
+//                 <a href="https://www.linkedin.com/company/kusheldigisolutions/posts/?feedView=all" style="color:#0073e6; text-decoration:none;">LinkedIn</a> •
+//                 <a href="https://www.instagram.com/kusheldigi/?hl=en" style="color:#0073e6; text-decoration:none;">Instagram</a> •
+//                 <a href="https://www.facebook.com/kusheldigisolutions/" style="color:#0073e6; text-decoration:none;">Facebook</a>
+//               </p>
+//             </td>
+//           </tr>
+
+//         </table>
+//       </td>
+//     </tr>
+//   </table>
+// </body>
+// </html>
+// `;
 
 // Routes
+
+
+
+const getThankYouEmail = (name) => `  
+  
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <title>Thank You</title>
+    </head>
+    <body>
+
+      <h2>Dear ${name},</h2>
+
+      <p>
+        Thank you for contacting <strong>Kushel Digi Solutions</strong>.
+        We have received your message, and our team will reach out to you within 24 hours.
+      </p>
+
+      <p>
+        If you need immediate assistance, you can email us at:
+        <a href="mailto:info@kusheldigi.com">info@kusheldigi.com</a>
+      </p>
+
+      <p>
+        Warm regards,<br />
+        <strong>Kushel Digi Team</strong>
+      </p>
+
+      <p>
+        <a href="https://kusheldigi.com">Visit Our Website</a>
+      </p>
+
+      <p>
+        © ${new Date().getFullYear()} Kushel Digi Solutions. All rights reserved.
+      </p>
+
+      <p>
+        Follow us:
+        <a href="https://www.linkedin.com/company/kusheldigisolutions/posts/?feedView=all">LinkedIn</a> •
+        <a href="https://www.instagram.com/kusheldigi/?hl=en">Instagram</a> •
+        <a href="https://www.facebook.com/kusheldigisolutions/">Facebook</a>
+      </p>
+
+    </body>
+  </html>
+`;
+
+
 app.get("/", (req, res) => res.send("Server is running"));
 
-// /contact - Simple form Popup Europe UK pages
-app.post("/contact", async (req, res) => {
+// @route   POST /contact, /contact1, /contact2, /contact10, /contact123 ...
+// @desc    Handle all contact form submissions where route starts with "/contact"
+//          and may optionally contain any number of digits after it.
+//          Example valid routes:
+//            - POST /contact
+//            - POST /contact1
+//            - POST /contact11
+//            - POST /contact2025
+//            - POST /contact999
+//          
+//          The regex /^\/contact[0-9]*$/ ensures:
+//            - Route must start with "/contact"
+//            - Followed by zero or more digits [0-9]*
+//            - No extra characters allowed after digits
+//
+// @access  Public (No authentication required)
+app.post(/^\/contact[0-9]*$/, async (req, res) => {
   try {
-    const { name, email, phone, page } = req.body;
-    console.log(
-      `\n📝 /contact - New Request: Name=${name}, Email=${email}, Phone=${phone}, Page=${page}`
+    console.log("📩 New Contact Request:", req.body);
+
+    // Normalize incoming messy body fields
+    const data = normalizePayload(req.body);
+
+    const adminEmailPromise = sendEmail(
+      "shubham@kusheldigi.com",
+      "New Contact Form Submission",
+      buildEmailHTML(data)
     );
 
-    const [token] = await Promise.all([
-      getZohoToken(ZOHO_CONFIG.client1),
-      sendEmail(
-        "info@kusheldigi.com",
-        "Contact Form",
-        `<div><div>Name: ${name}</div><div>Phone: ${phone}</div><div>Email: ${email}</div> ${
-          page ? `<div>Page: ${page}</div>` : ""
-        }</div>`
-      ),
-      sendEmail(
-        email,
-        "Thanks for Reaching Out to Kushel Digi Solutions",
-        getThankYouEmail(name)
-      ),
-    ]);
-
-    Promise.all([
-      createZohoLead(token, {
-        First_Name: name,
-        Last_Name: "-",
-        Email: email,
-        Phone: phone,
-      }),
-      createExternalLead({
-        FirstName: name,
-        Phone: phone,
-        Email: email,
-        DescriptionInfo: `${page || "From Website Pages"}`,
-        LeadSource: "website",
-      }),
-      sendWhatsApp(phone),
-    ]).catch((err) =>
-      console.error("Non-blocking operations error:", err.message)
+    const userEmailPromise = sendEmail(
+      data.email,
+      "Thanks for contacting Kushel Digi Solutions",
+      getThankYouEmail(data.name)
     );
 
-    res.json({
+    // Run both emails at the same time
+    await Promise.all([adminEmailPromise, userEmailPromise]);
+
+
+    return res.json({
       success: true,
-      message: "Thank You! we will get back you shortly",
+      message: "Thank you! We will get back to you shortly."
     });
+
   } catch (error) {
-    console.error("❌ /contact Error:", error.message);
-    res.status(500).json({ success: false, message: "An error occurred" });
+    console.error("❌ Error in /contact:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Failed to submit form. Try again later."
+    });
   }
 });
 
+
+/** 
+
+// Not working 
 // /contact11 - Contact page with service contact us
 app.post("/contact11", async (req, res) => {
   try {
@@ -345,51 +476,50 @@ app.post("/contact11", async (req, res) => {
       `\n📝 /contact11 - New Request: Name=${name11}, Email=${email11}, Phone=${phone11}, Service=${service11}`
     );
 
-    const [token] = await Promise.all([
-      getZohoToken(ZOHO_CONFIG.client1),
-      sendEmail(
-        "info@kusheldigi.com",
-        "Contact Form",
-        `<div><div>Name: ${name11}</div><div>Phone: ${phone11}</div><div>Email: ${email11}</div><div>Service: ${service11}</div><div>Message: ${message11}</div></div> ${
-          page ? `<div>Page: ${page}</div>` : ""
-        }`
-      ),
-      sendEmail(
-        email11,
-        "Thanks for Reaching Out to Kushel Digi Solutions",
-        getThankYouEmail(name11)
-      ),
-      createExternalLead({
-        FirstName: name11,
-        Phone: phone11,
-        Email: email11,
-        DescriptionInfo: message11 + (page ? ` | Page: ${page}` : ""),
-        LeadSource: "website",
-      }),
-    ]);
+const [token] = await Promise.all([
+  getZohoToken(ZOHO_CONFIG.client1),
+  sendEmail(
+    "info@kusheldigi.com",
+    "Contact Form",
+    `<div><div>Name: ${name11}</div><div>Phone: ${phone11}</div><div>Email: ${email11}</div><div>Service: ${service11}</div><div>Message: ${message11}</div></div> ${page ? `<div>Page: ${page}</div>` : ""
+    }`
+  ),
+  sendEmail(
+    email11,
+    "Thanks for Reaching Out to Kushel Digi Solutions",
+    getThankYouEmail(name11)
+  ),
+  createExternalLead({
+    FirstName: name11,
+    Phone: phone11,
+    Email: email11,
+    DescriptionInfo: message11 + (page ? ` | Page: ${page}` : ""),
+    LeadSource: "website",
+  }),
+]);
 
-    Promise.all([
-      createZohoLead(token, {
-        Department: service11,
-        First_Name: name11,
-        Last_Name: "-",
-        Email: email11,
-        Description: message11,
-        Phone: phone11,
-      }),
-      sendWhatsApp(phone11),
-    ]).catch((err) =>
-      console.error("Non-blocking operations error:", err.message)
-    );
+Promise.all([
+  createZohoLead(token, {
+    Department: service11,
+    First_Name: name11,
+    Last_Name: "-",
+    Email: email11,
+    Description: message11,
+    Phone: phone11,
+  }),
+  sendWhatsApp(phone11),
+]).catch((err) =>
+  console.error("Non-blocking operations error:", err.message)
+);
 
-    res.json({
-      success: true,
-      message: "Thank You! we will get back you shortly",
-    });
+res.json({
+  success: true,
+  message: "Thank You! we will get back you shortly",
+});
   } catch (error) {
-    console.error("❌ /contact11 Error:", error.message);
-    res.status(500).json({ success: false, message: "An error occurred" });
-  }
+  console.error("❌ /contact11 Error:", error.message);
+  res.status(500).json({ success: false, message: "An error occurred" });
+}
 });
 
 // /contact1 - With company
@@ -466,8 +596,7 @@ app.post("/contact2", async (req, res) => {
       sendEmail(
         "info@kusheldigi.com",
         "Contact Form",
-        `<div><div>Name: ${name2}</div><div>phone: ${phone2}</div><div>email: ${email2}</div><div>Message: ${message2}</div></div> ${
-          page ? `<div>Page: ${page}</div>` : ""
+        `<div><div>Name: ${name2}</div><div>phone: ${phone2}</div><div>email: ${email2}</div><div>Message: ${message2}</div></div> ${page ? `<div>Page: ${page}</div>` : ""
         }`
       ),
       sendEmail(
@@ -519,8 +648,7 @@ app.post("/contact3", async (req, res) => {
       sendEmail(
         "info@kusheldigi.com",
         "Contact Form",
-        `<div><div>Name: ${name4}</div><div>Email: ${email4}</div><div>Requirement: ${requirement4}</div></div> ${
-          page ? `<div>Page: ${page}</div>` : ""
+        `<div><div>Name: ${name4}</div><div>Email: ${email4}</div><div>Requirement: ${requirement4}</div></div> ${page ? `<div>Page: ${page}</div>` : ""
         }`
       ),
       sendEmail(
@@ -574,8 +702,7 @@ app.post("/contact4", async (req, res) => {
       sendEmail(
         "info@kusheldigi.com",
         "Contact Form",
-        `<div><div>FirstName: ${first_name}</div><div>LastName: ${last_name}</div><div>EmailAddress: ${email_address}</div><div>City: ${city}</div><div>Date: ${date}</div><div>Time: ${time}</div><div>AdditionalMessage: ${additional_msg}</div></div> ${
-          page ? `<div>Page: ${page}</div>` : ""
+        `<div><div>FirstName: ${first_name}</div><div>LastName: ${last_name}</div><div>EmailAddress: ${email_address}</div><div>City: ${city}</div><div>Date: ${date}</div><div>Time: ${time}</div><div>AdditionalMessage: ${additional_msg}</div></div> ${page ? `<div>Page: ${page}</div>` : ""
         }`
       ),
       sendEmail(
@@ -615,8 +742,7 @@ app.post("/contact5", async (req, res) => {
       sendEmail(
         "info@kusheldigi.com",
         "Contact Form",
-        `<div><div>Technology: ${technology}</div><div>Products: ${products}</div><div>E-store: ${Estore}</div><div>Name: ${name6}</div><div>Mobile: ${mobile6}</div><div>Email: ${email6}</div></div> ${
-          page ? `<div>Page: ${page}</div>` : ""
+        `<div><div>Technology: ${technology}</div><div>Products: ${products}</div><div>E-store: ${Estore}</div><div>Name: ${name6}</div><div>Mobile: ${mobile6}</div><div>Email: ${email6}</div></div> ${page ? `<div>Page: ${page}</div>` : ""
         }`
       ),
       sendEmail(
@@ -650,6 +776,9 @@ app.post("/contact5", async (req, res) => {
     res.status(500).json({ success: false, message: "An error occurred" });
   }
 });
+
+*/
+
 
 // /test - Test endpoint
 app.post("/test", async (req, res) => {
